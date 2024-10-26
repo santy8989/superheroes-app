@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Superhero } from '../interfaces/superhero.interface';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +9,9 @@ export class SuperheroService {
   private localStorageKey = 'superheroes';
 
   private defaultHeroes: Superhero[] = [
-    { id: 1, alias: 'Spiderman', name: 'Peter Parker', power: 'Spider abilities', companyName: 'Marvel' },
-    { id: 2, alias: 'Superman', name: 'Clark Kent', power: 'Super strength', companyName: 'DC Comics' },
-    { id: 3, alias: 'Iron Man', name: 'Tony Stark', power: 'Money', companyName: 'Marvel' }
+    { id: 1, alias: 'Spiderman', name: 'Peter Parker', power: 'Spider abilities', image: 'Marvel' },
+    { id: 2, alias: 'Superman', name: 'Clark Kent', power: 'Super strength', image: 'DC Comics' },
+    { id: 3, alias: 'Iron Man', name: 'Tony Stark', power: 'Money', image: 'Marvel' }
   ];
 
   private heroesSubject: BehaviorSubject<Superhero[]> = new BehaviorSubject<Superhero[]>([]);
@@ -48,6 +48,12 @@ export class SuperheroService {
     );
     this.heroesSubject.next(heroes);
     this.saveHeroesToLocalStorage();
+  }
+  
+  getHeroById(id: number): Observable<Superhero | undefined> {
+    return this.heroes$.pipe(
+      map(heroes => heroes.find(hero => hero.id === id))
+    );
   }
 
   deleteHero(id: number): void {

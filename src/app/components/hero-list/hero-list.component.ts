@@ -9,6 +9,8 @@ import { HeroFormComponent } from '../hero-form/hero-form.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchComponent } from "../search/search.component";
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-hero-list',
@@ -26,7 +28,7 @@ export class HeroListComponent implements OnInit {
     { header: 'Nombre', field: 'name' },
     { header: 'Alias', field: 'alias' },
     { header: 'Poder', field: 'power' },
-    { header: 'Compañía', field: 'companyName' }
+    // { header: 'Compañía', field: 'companyName' }
   ];
 
   actions = [
@@ -39,12 +41,18 @@ export class HeroListComponent implements OnInit {
       icon: 'delete',
       color: 'warn',
       callback: (hero: Superhero) => this.deleteHero(hero)
-    }
+    },
+    {
+      icon: 'visibility',
+      color: 'accent',
+      callback: (hero: Superhero) => this.viewHero(hero.id)
+    },
   ];
 
   constructor(
     private superheroService: SuperheroService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -79,6 +87,9 @@ export class HeroListComponent implements OnInit {
         this.superheroService.updateHero(updatedHero);
       }
     });
+  }
+  viewHero(id: number): void {
+    this.router.navigate(['/hero', id]);
   }
 
   deleteHero(hero: Superhero): void {

@@ -1,0 +1,42 @@
+<div class="hero-detail-container" *ngIf="hero; else notFound">
+    <mat-card class="hero-card">
+      <mat-card-header>
+        <mat-card-title>{{ hero?.alias }} ({{ hero?.name }})</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <img 
+            [src]="hero?.image || 'assets/default-hero.jpg'" 
+            (error)="setDefaultImage($event)" 
+            alt="{{ hero?.alias }}" 
+            class="hero-image">
+  
+        <p><strong>Poder:</strong> {{ hero?.power }}</p>
+      </mat-card-content>
+      <mat-card-actions class="action-container">
+        <button mat-raised-button color="primary" (click)="goBack()">Volver a la lista</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  
+  <ng-template #notFound>
+    <div class="hero-detail-container">
+      <mat-card class="hero-card">
+        <mat-card-header>
+          <mat-card-title>Héroe no encontrado</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <img 
+            src="assets/not-found.png" 
+            (error)="setDefaultImage($event)" 
+            alt="{{ hero?.alias }}" 
+            class="hero-image">
+  
+          <p>El héroe que buscas no existe en nuestra base de datos.</p>
+        </mat-card-content>
+        <mat-card-actions class="action-container">
+          <button mat-raised-button color="accent" (click)="goBack()">Volver a la lista</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </ng-template>
+  

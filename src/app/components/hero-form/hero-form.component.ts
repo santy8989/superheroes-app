@@ -33,8 +33,17 @@ export class HeroFormComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
       alias: ['',[Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
       power: [''],
-      companyName: ['', Validators.maxLength(15)]
+      image: ['',this.urlValidator()]
     });
+  }
+  urlValidator() {
+    return (control: any) => {
+      if (!control.value) {
+        return null; 
+      }
+      const urlPattern = /^(https?:\/\/)?([\w.-]+(\.[\w.-]+)+)(\/[\w-./?%&=]*)?$/;
+      return urlPattern.test(control.value) ? null : { invalidUrl: true };
+    };
   }
 
   ngOnInit(): void {
