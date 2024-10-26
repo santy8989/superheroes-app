@@ -32,7 +32,7 @@ export class HeroFormComponent implements OnInit {
     this.heroForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
       alias: ['',[Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
-      power: [''],
+      power: ['',Validators.required],
       image: ['',this.urlValidator()]
     });
   }
