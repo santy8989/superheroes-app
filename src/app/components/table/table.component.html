@@ -1,11 +1,11 @@
 <div class="table-container">
-<mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-custom">
+  <mat-table [dataSource]="dataSourceWithPagination" matSort class="mat-elevation-z8 table-custom">
     
     <ng-container *ngFor="let column of columns" [matColumnDef]="column.field">
-      <mat-header-cell *matHeaderCellDef>{{ column.header }}</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{ column.header }} </mat-header-cell>
       <mat-cell *matCellDef="let row">{{ row[column.field] }}</mat-cell>
     </ng-container>
-  
+
     <ng-container *ngIf="actions" matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
       <mat-cell *matCellDef="let row">
@@ -20,4 +20,8 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+
+  <div class="paginator-container">
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
 </div>
