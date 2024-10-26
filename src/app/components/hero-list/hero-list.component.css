@@ -1,0 +1,12 @@
+.container {
+    margin: 0 auto; 
+    padding: 0 3rem; 
+    /* overflow-x: auto; */
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+  

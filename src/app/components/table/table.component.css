@@ -1,3 +1,13 @@
 .button-spacing {
     margin-right: 10px;
   }
+  .table-container {
+    overflow-x: auto; 
+  }
+  
+  .table-container mat-table {
+    min-width: 500px; 
+  }
+  
+  
+  

@@ -1,2 +1,12 @@
-
-<app-table [columns]="columns" [dataSource]="heroes" [actions]="actions"></app-table>
+<div class="container">
+    <app-search (searchTerm)="onSearch($event)"></app-search>
+  
+    <app-table [columns]="columns" [dataSource]="filteredHeroes" [actions]="actions"></app-table>
+  
+    <div class="button-container">
+      <button mat-raised-button color="accent" (click)="addHero()">
+        <mat-icon>add</mat-icon> Agregar Héroe
+      </button>
+    </div>
+  </div>
+  

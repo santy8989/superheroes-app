@@ -2,6 +2,6 @@ export interface Superhero {
     id: number;
     name: string;
     alias: string;
-    power: string;
+    power?: string;
     companyName?: string; 
   }

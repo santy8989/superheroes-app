@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class TableComponent implements OnInit {
   @Input() columns: { header: string; field: string }[] = [];
   @Input() dataSource: any[] = [];
-  @Input() actions?: { label: string; icon: string; color?: string; callback: (row: any) => void }[] = [];
+  @Input() actions?: { icon: string; color?: string; callback: (row: any) => void }[] = [];
 
 
   displayedColumns: string[] = [];

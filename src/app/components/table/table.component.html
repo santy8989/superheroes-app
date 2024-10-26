@@ -1,4 +1,5 @@
-<mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div class="table-container">
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-custom">
     
     <ng-container *ngFor="let column of columns" [matColumnDef]="column.field">
       <mat-header-cell *matHeaderCellDef>{{ column.header }}</mat-header-cell>
@@ -9,8 +10,8 @@
       <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
       <mat-cell *matCellDef="let row">
         <ng-container *ngFor="let action of actions">
-          <button mat-raised-button [color]="action.color || 'primary'" class="button-spacing" (click)="onAction(action.callback, row)">
-            <mat-icon>{{ action.icon }}</mat-icon> {{ action.label }}
+          <button mat-icon-button [color]="action.color || 'primary'" (click)="onAction(action.callback, row)">
+            <mat-icon>{{ action.icon }}</mat-icon>
           </button>
         </ng-container>
       </mat-cell>
@@ -19,4 +20,4 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-  
+</div>

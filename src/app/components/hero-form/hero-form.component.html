@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>{{ data ? 'Editar Héroe' : 'Nuevo Héroe' }}</h2>
+
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="heroForm" (ngSubmit)="onSave()" class="form-container">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="heroForm.get('name')?.hasError('required')">El nombre es requerido</mat-error>
+      <mat-error *ngIf="heroForm.get('name')?.hasError('minlength')">El nombre debe tener al menos 3 caracteres</mat-error>
+      <mat-error *ngIf="heroForm.get('name')?.hasError('maxlength')">El nombre no puede tener más de 15 caracteres</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Alias</mat-label>
+      <input matInput formControlName="alias" />
+      <mat-error *ngIf="heroForm.get('alias')?.hasError('required')">Alias es requerido</mat-error>
+      <mat-error *ngIf="heroForm.get('alias')?.hasError('minlength')">El alias debe tener al menos 3 caracteres</mat-error>
+      <mat-error *ngIf="heroForm.get('alias')?.hasError('maxlength')">El alias no puede tener más de 15 caracteres</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Poder</mat-label>
+      <input matInput formControlName="power"/>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Compañía</mat-label>
+      <input matInput formControlName="companyName" />
+      <mat-error *ngIf="heroForm.get('companyName')?.hasError('required')">La compañía es requerida</mat-error>
+      <mat-error *ngIf="heroForm.get('companyName')?.hasError('maxlength')">La compañía no puede tener más de 15 caracteres</mat-error>
+    </mat-form-field>
+
+    <mat-dialog-actions align="end" class="dialog-actions">
+      <button mat-button mat-dialog-close type="button" color="accent">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!heroForm.valid">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>
