@@ -30,7 +30,6 @@ export class HeroDetailComponent implements OnInit {
       this.isLoading = loading;
     });
     const heroId = Number(this.route.snapshot.paramMap.get('id'));
-    console.log("hero",heroId)
     this.superheroService.getHeroById(heroId).subscribe(hero => {
       this.hero = hero;
     });
