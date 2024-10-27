@@ -26,7 +26,7 @@ export class HeroListComponent implements OnInit {
   
   columns = [
     { header: 'Nombre', field: 'name' },
-    { header: 'Alias', field: 'alias' },
+    { header: 'Identidad secreta', field: 'identity' },
     { header: 'Poder', field: 'power' },
     // { header: 'Compañía', field: 'companyName' }
   ];
@@ -108,8 +108,8 @@ export class HeroListComponent implements OnInit {
   onSearch(term: string): void {
     const searchTerm = term.toLowerCase();
     this.filteredHeroes = this.heroes.filter(hero =>
-      hero.name.toLowerCase().includes(searchTerm) ||
-      hero.alias.toLowerCase().includes(searchTerm)
+      hero.name.includes(searchTerm) ||
+      hero.identity.toLowerCase().includes(searchTerm)
     );
   }
 }

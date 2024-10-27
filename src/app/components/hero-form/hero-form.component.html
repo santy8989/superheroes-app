@@ -4,23 +4,24 @@
   <form [formGroup]="heroForm" (ngSubmit)="onSave()" class="form-container">
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre</mat-label>
-      <input matInput formControlName="name" />
+      <input matInput formControlName="name" appUppercase />
       <mat-error *ngIf="heroForm.get('name')?.hasError('required')">El nombre es requerido</mat-error>
       <mat-error *ngIf="heroForm.get('name')?.hasError('minlength')">El nombre debe tener al menos 3 caracteres</mat-error>
       <mat-error *ngIf="heroForm.get('name')?.hasError('maxlength')">El nombre no puede tener más de 15 caracteres</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Alias</mat-label>
-      <input matInput formControlName="alias" />
-      <mat-error *ngIf="heroForm.get('alias')?.hasError('required')">El alias es requerido</mat-error>
-      <mat-error *ngIf="heroForm.get('alias')?.hasError('minlength')">El alias debe tener al menos 3 caracteres</mat-error>
-      <mat-error *ngIf="heroForm.get('alias')?.hasError('maxlength')">El alias no puede tener más de 15 caracteres</mat-error>
+      <mat-label>Identidad Secreta</mat-label>
+      <input matInput formControlName="identity" />
+      <mat-error *ngIf="heroForm.get('identity')?.hasError('required')">La identidad es requerida</mat-error>
+      <mat-error *ngIf="heroForm.get('identity')?.hasError('minlength')">La identidad debe tener al menos 3 caracteres</mat-error>
+      <mat-error *ngIf="heroForm.get('identity')?.hasError('maxlength')">La identidad no puede tener más de 15 caracteres</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Poder</mat-label>
       <mat-error *ngIf="heroForm.get('power')?.hasError('required')">El poder es requerido</mat-error>
+      <mat-error *ngIf="heroForm.get('power')?.hasError('minlength')">El poder debe tener al menos 3 caracteres</mat-error>
       <input matInput formControlName="power"/>
     </mat-form-field>
 

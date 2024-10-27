@@ -1,13 +1,13 @@
 <div class="hero-detail-container" *ngIf="hero; else notFound">
     <mat-card class="hero-card">
       <mat-card-header>
-        <mat-card-title>{{ hero?.alias }} ({{ hero?.name }})</mat-card-title>
+        <mat-card-title>{{ hero?.name }} ({{ hero?.identity }})</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <img 
             [src]="hero?.image || 'assets/default-hero.jpg'" 
             (error)="setDefaultImage($event)" 
-            alt="{{ hero?.alias }}" 
+            alt="{{ hero?.name }}" 
             class="hero-image">
   
         <p><strong>Poder:</strong> {{ hero?.power }}</p>
@@ -28,7 +28,7 @@
             <img 
             src="assets/not-found.png" 
             (error)="setDefaultImage($event)" 
-            alt="{{ hero?.alias }}" 
+            alt="{{ hero?.identity }}" 
             class="hero-image">
   
           <p>El héroe que buscas no existe en nuestra base de datos.</p>

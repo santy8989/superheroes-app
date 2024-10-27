@@ -9,9 +9,9 @@ export class SuperheroService {
   private localStorageKey = 'superheroes';
 
   private defaultHeroes: Superhero[] = [
-    { id: 1, alias: 'Spiderman', name: 'Peter Parker', power: 'Spider abilities', image: 'Marvel' },
-    { id: 2, alias: 'Superman', name: 'Clark Kent', power: 'Super strength', image: 'DC Comics' },
-    { id: 3, alias: 'Iron Man', name: 'Tony Stark', power: 'Money', image: 'Marvel' }
+    { id: 1, name: 'SPIDERMAN', identity: 'Peter Parker', power: 'Spider abilities', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5lo7PcxCCcEE1rbPIwFV37bTQoioBmNGhcg&s' },
+    { id: 2, name: 'SUPERMAN', identity: 'Clark Kent', power: 'Super strength', image: 'https://www.cinemascomics.com/wp-content/uploads/2021/06/Superman.jpg' },
+    { id: 3, name: 'IRON MAN', identity: 'Tony Stark', power: 'Money', image: 'https://hips.hearstapps.com/hmg-prod/images/iron-man-nuevo-traje-1539168331.jpg?crop=1xw:0.27xh;center,top&resize=1200:*' }
   ];
 
   private heroesSubject: BehaviorSubject<Superhero[]> = new BehaviorSubject<Superhero[]>([]);
@@ -22,8 +22,15 @@ export class SuperheroService {
   }
 
   private loadHeroesFromLocalStorage(): void {
+   
     const savedHeroes = localStorage.getItem(this.localStorageKey);
-    const heroes = savedHeroes ? JSON.parse(savedHeroes) : this.defaultHeroes;
+    let heroes: Superhero[];
+    if (savedHeroes) {
+      const parsedHeroes = JSON.parse(savedHeroes);
+      heroes = parsedHeroes.length > 0 ? parsedHeroes : this.defaultHeroes;
+    } else {
+      heroes = this.defaultHeroes;
+    };
     this.heroesSubject.next(heroes);
     this.saveHeroesToLocalStorage();
   }

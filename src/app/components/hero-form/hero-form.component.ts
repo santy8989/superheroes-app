@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Superhero } from '../../interfaces/superhero.interface';
+import { UppercaseDirective } from '../../directives/uppercase.directive';
+
 
 @Component({
   selector: 'app-hero-form',
@@ -16,7 +18,8 @@ import { Superhero } from '../../interfaces/superhero.interface';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    UppercaseDirective
   ],
   templateUrl: './hero-form.component.html',
   styleUrls: ['./hero-form.component.css']
@@ -30,9 +33,9 @@ export class HeroFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Superhero
   ) {
     this.heroForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
-      alias: ['',[Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
-      power: ['',Validators.required],
+      name: ['', [Validators.required, Validators.minLength(3),Validators.maxLength(20)]],
+      identity: ['',[Validators.required, Validators.minLength(3),Validators.maxLength(30)]],
+      power: ['',[Validators.required,Validators.minLength(3),]],
       image: ['',this.urlValidator()]
     });
   }
@@ -41,10 +44,11 @@ export class HeroFormComponent implements OnInit {
       if (!control.value) {
         return null; 
       }
-      const urlPattern = /^(https?:\/\/)?([\w.-]+(\.[\w.-]+)+)(\/[\w-./?%&=]*)?$/;
+      const urlPattern = /^(https?:\/\/)?[^\s]+\.[^\s]+$/i;
       return urlPattern.test(control.value) ? null : { invalidUrl: true };
     };
   }
+  
 
   ngOnInit(): void {
     if (this.data) {
