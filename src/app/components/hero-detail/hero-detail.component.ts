@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { LoadingService } from '../../services/loading.service';
 @Component({
   selector: 'app-hero-detail',
   standalone: true,
@@ -15,14 +16,19 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class HeroDetailComponent implements OnInit {
   hero: Superhero | undefined ;
+  isLoading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private superheroService: SuperheroService,
+    private loadingService:LoadingService,
     private router:Router
   ) {}
 
   ngOnInit(): void {
+    this.loadingService.loading$.subscribe((loading) => {
+      this.isLoading = loading;
+    });
     const heroId = Number(this.route.snapshot.paramMap.get('id'));
     console.log("hero",heroId)
     this.superheroService.getHeroById(heroId).subscribe(hero => {

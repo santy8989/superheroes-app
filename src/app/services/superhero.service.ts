@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Superhero } from '../interfaces/superhero.interface';
 import { Observable, BehaviorSubject, map } from 'rxjs';
+import { LoadingService } from './loading.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SuperheroService {
   private localStorageKey = 'superheroes';
+  private delayTime:number=500;
 
   private defaultHeroes: Superhero[] = [
     { id: 1, name: 'SPIDERMAN', identity: 'Peter Parker', power: 'Spider abilities', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5lo7PcxCCcEE1rbPIwFV37bTQoioBmNGhcg&s' },
@@ -17,12 +19,11 @@ export class SuperheroService {
   private heroesSubject: BehaviorSubject<Superhero[]> = new BehaviorSubject<Superhero[]>([]);
   public heroes$: Observable<Superhero[]> = this.heroesSubject.asObservable();
 
-  constructor() {
+  constructor(private loadingService: LoadingService) {
     this.loadHeroesFromLocalStorage();
   }
 
   private loadHeroesFromLocalStorage(): void {
-   
     const savedHeroes = localStorage.getItem(this.localStorageKey);
     let heroes: Superhero[];
     if (savedHeroes) {
@@ -40,33 +41,57 @@ export class SuperheroService {
   }
 
   getAllHeroes(): Observable<Superhero[]> {
-    return this.heroes$;
+    this.loadingService.show();
+    return new Observable(observer => {
+      setTimeout(() => {
+        observer.next(this.heroesSubject.value);
+        observer.complete();
+        this.loadingService.hide();
+      }, this.delayTime);
+    });
   }
 
   addHero(hero: Superhero): void {
-    const heroes = [...this.heroesSubject.value, { ...hero, id: this.generateId() }];
-    this.heroesSubject.next(heroes);
-    this.saveHeroesToLocalStorage();
+    this.loadingService.show();
+    setTimeout(() => {
+      const heroes = [...this.heroesSubject.value, { ...hero, id: this.generateId() }];
+      this.heroesSubject.next(heroes);
+      this.saveHeroesToLocalStorage();
+      this.loadingService.hide();
+    }, this.delayTime);
   }
 
   updateHero(updatedHero: Superhero): void {
-    const heroes = this.heroesSubject.value.map(hero =>
-      hero.id === updatedHero.id ? updatedHero : hero
-    );
-    this.heroesSubject.next(heroes);
-    this.saveHeroesToLocalStorage();
+    this.loadingService.show();
+    setTimeout(() => {
+      const heroes = this.heroesSubject.value.map(hero =>
+        hero.id === updatedHero.id ? updatedHero : hero
+      );
+      this.heroesSubject.next(heroes);
+      this.saveHeroesToLocalStorage();
+      this.loadingService.hide();
+    }, this.delayTime);
   }
   
   getHeroById(id: number): Observable<Superhero | undefined> {
-    return this.heroes$.pipe(
-      map(heroes => heroes.find(hero => hero.id === id))
-    );
+    this.loadingService.show();
+    return new Observable(observer => {
+      setTimeout(() => {
+        observer.next(this.heroesSubject.value.find(hero => hero.id === id));
+        observer.complete();
+        this.loadingService.hide();
+      }, this.delayTime); 
+    });
   }
 
   deleteHero(id: number): void {
-    const heroes = this.heroesSubject.value.filter(hero => hero.id !== id);
-    this.heroesSubject.next(heroes);
-    this.saveHeroesToLocalStorage();
+    this.loadingService.show();
+    setTimeout(() => {
+      const heroes = this.heroesSubject.value.filter(hero => hero.id !== id);
+      this.heroesSubject.next(heroes);
+      this.saveHeroesToLocalStorage();
+      this.loadingService.hide();
+    }, this.delayTime); 
   }
 
   private generateId(): number {

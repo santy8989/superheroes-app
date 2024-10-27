@@ -10,25 +10,31 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchComponent } from "../search/search.component";
 import { Router } from '@angular/router';
-
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-hero-list',
   standalone: true,
-  imports: [CommonModule, TableComponent, HeroFormComponent, MatButtonModule, MatIconModule, SearchComponent],
+  imports: [
+    CommonModule,
+    TableComponent,
+    HeroFormComponent,
+    MatButtonModule,
+    MatIconModule,
+    SearchComponent
+  ],
   templateUrl: './hero-list.component.html',
   styleUrls: ['./hero-list.component.css']
 })
 export class HeroListComponent implements OnInit {
-
   heroes: Superhero[] = [];
   filteredHeroes: Superhero[] = [];
-  
+  isLoading: boolean = false;
+
   columns = [
     { header: 'Nombre', field: 'name' },
     { header: 'Identidad secreta', field: 'identity' },
-    { header: 'Poder', field: 'power' },
-    // { header: 'Compañía', field: 'companyName' }
+    { header: 'Poder', field: 'power' }
   ];
 
   actions = [
@@ -46,17 +52,22 @@ export class HeroListComponent implements OnInit {
       icon: 'visibility',
       color: 'accent',
       callback: (hero: Superhero) => this.viewHero(hero.id)
-    },
+    }
   ];
 
   constructor(
     private superheroService: SuperheroService,
+    private loadingService: LoadingService,
     public dialog: MatDialog,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.superheroService.getAllHeroes().subscribe(data => {
+    this.loadingService.loading$.subscribe((loading) => {
+      this.isLoading = loading;
+    });
+
+    this.superheroService.heroes$.subscribe(data => {
       this.heroes = [...data];
       this.filteredHeroes = [...data];
     });
@@ -88,6 +99,7 @@ export class HeroListComponent implements OnInit {
       }
     });
   }
+
   viewHero(id: number): void {
     this.router.navigate(['/hero', id]);
   }
@@ -108,7 +120,7 @@ export class HeroListComponent implements OnInit {
   onSearch(term: string): void {
     const searchTerm = term.toLowerCase();
     this.filteredHeroes = this.heroes.filter(hero =>
-      hero.name.includes(searchTerm) ||
+      hero.name.toLowerCase().includes(searchTerm) ||
       hero.identity.toLowerCase().includes(searchTerm)
     );
   }
