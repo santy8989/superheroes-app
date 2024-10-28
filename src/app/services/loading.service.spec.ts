@@ -6,7 +6,7 @@ describe('LoadingService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LoadingService]
+      providers: [LoadingService],
     });
     service = TestBed.inject(LoadingService);
   });
@@ -17,7 +17,7 @@ describe('LoadingService', () => {
 
   it('should set loading to true when show is called', (done: DoneFn) => {
     service.show();
-    service.loading$.subscribe(isLoading => {
+    service.loading$.subscribe((isLoading) => {
       expect(isLoading).toBeTrue();
       done();
     });
@@ -25,10 +25,9 @@ describe('LoadingService', () => {
 
   it('should set loading to false when hide is called', (done: DoneFn) => {
     service.hide();
-    service.loading$.subscribe(isLoading => {
+    service.loading$.subscribe((isLoading) => {
       expect(isLoading).toBeFalse();
       done();
     });
   });
-
 });

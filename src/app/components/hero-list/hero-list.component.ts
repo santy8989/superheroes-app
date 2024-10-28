@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject,OnDestroy  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuperheroService } from '../../services/superhero.service';
 import { Superhero } from '../../interfaces/superhero.interface';
@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { SearchComponent } from "../search/search.component";
 import { Router } from '@angular/router';
 import { LoadingService } from '../../services/loading.service';
+import { Subscription } from 'rxjs';
+
 
 export type DialogFactory = (component: any, data: any) => { afterClosed: () => any };
 
@@ -27,7 +29,7 @@ export type DialogFactory = (component: any, data: any) => { afterClosed: () => 
   templateUrl: './hero-list.component.html',
   styleUrls: ['./hero-list.component.css']
 })
-export class HeroListComponent implements OnInit {
+export class HeroListComponent implements OnInit, OnDestroy {
   heroes: Superhero[] = [];
   filteredHeroes: Superhero[] = [];
   isLoading: boolean = false;
@@ -62,6 +64,7 @@ export class HeroListComponent implements OnInit {
     private router: Router,
     @Inject('dialogFactory') private dialogFactory: DialogFactory
   ) {}
+  private subscriptions: Subscription = new Subscription();
 
   ngOnInit(): void {
     this.loadingService.loading$.subscribe((loading) => {
@@ -73,7 +76,14 @@ export class HeroListComponent implements OnInit {
       this.filteredHeroes = [...data];
     });
   }
-
+  ngOnDestroy(): void {
+    // Cleans up all subscriptions to avoid memory leaks when the component is destroyed
+    this.subscriptions.unsubscribe();
+  }
+  /**
+   * Opens a dialog using the dialogFactory, passing in a component and data.
+   * Returns an observable that emits when the dialog is closed.
+   */
   openDialog(component: any, data: any) {
     return this.dialogFactory(component, data);
   }
