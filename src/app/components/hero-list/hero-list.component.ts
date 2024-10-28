@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuperheroService } from '../../services/superhero.service';
 import { Superhero } from '../../interfaces/superhero.interface';
 import { TableComponent } from '../table/table.component';
-import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { HeroFormComponent } from '../hero-form/hero-form.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { SearchComponent } from "../search/search.component";
 import { Router } from '@angular/router';
 import { LoadingService } from '../../services/loading.service';
+
+export type DialogFactory = (component: any, data: any) => { afterClosed: () => any };
 
 @Component({
   selector: 'app-hero-list',
@@ -58,8 +59,8 @@ export class HeroListComponent implements OnInit {
   constructor(
     private superheroService: SuperheroService,
     private loadingService: LoadingService,
-    public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    @Inject('dialogFactory') private dialogFactory: DialogFactory
   ) {}
 
   ngOnInit(): void {
@@ -73,13 +74,13 @@ export class HeroListComponent implements OnInit {
     });
   }
 
-  addHero(): void {
-    const dialogRef = this.dialog.open(HeroFormComponent, {
-      width: '400px',
-      data: null
-    });
+  openDialog(component: any, data: any) {
+    return this.dialogFactory(component, data);
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
+  addHero(): void {
+    const dialogRef = this.openDialog(HeroFormComponent, null);
+    dialogRef.afterClosed().subscribe((result: Superhero | null) => {
       if (result) {
         this.superheroService.addHero(result);
       }
@@ -87,34 +88,26 @@ export class HeroListComponent implements OnInit {
   }
 
   editHero(hero: Superhero): void {
-    const dialogRef = this.dialog.open(HeroFormComponent, {
-      width: '400px',
-      data: hero 
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) { 
+    const dialogRef = this.openDialog(HeroFormComponent, hero);
+    dialogRef.afterClosed().subscribe((result: Partial<Superhero> | null) => {
+      if (result) {
         const updatedHero = { ...hero, ...result };
         this.superheroService.updateHero(updatedHero);
       }
     });
   }
 
-  viewHero(id: number): void {
-    this.router.navigate(['/hero', id]);
-  }
-
   deleteHero(hero: Superhero): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { name: hero.name }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
+    const dialogRef = this.openDialog(ConfirmDialogComponent, { name: hero.name });
+    dialogRef.afterClosed().subscribe((result: boolean | null) => {
       if (result) {
         this.superheroService.deleteHero(hero.id);
       }
     });
+  }
+
+  viewHero(id: number): void {
+    this.router.navigate(['/hero', id]);
   }
 
   onSearch(term: string): void {
