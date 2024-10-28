@@ -62,7 +62,7 @@ Sigue estos pasos para instalar y ejecutar la aplicación en tu entorno local:
     ``` bash
     
    
-    `git clone https://github.com/tu-usuario/SuperheroesApp.git` 
+    `git https://github.com/santy8989/superheroes-app.git` 
     ``` 
     
 2.  **Acceder al Directorio del Proyecto**
@@ -71,7 +71,7 @@ Sigue estos pasos para instalar y ejecutar la aplicación en tu entorno local:
     ``` bash
     
    
-     `cd SuperheroesApp` 
+     `cd superheroes-app` 
     ``` 
     
     
@@ -102,7 +102,7 @@ Sigue estos pasos para instalar y ejecutar la aplicación en tu entorno local:
 
 -   **Registrar un Nuevo Súper Héroe:**
     
-    -   Haz clic en el botón "Añadir Héroe".
+    -   Haz clic en el botón "Agregar Héroe".
     -   Completa el formulario con los datos del héroe y guarda los cambios.
 -   **Consultar Todos los Súper Héroes:**
     
