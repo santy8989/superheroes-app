@@ -15,7 +15,6 @@ export class HeaderComponent {
   constructor(private router: Router) {}
 
   navigateToHome(): void {
-    console.log("hola")
     this.router.navigate(['/']);
   }
 }

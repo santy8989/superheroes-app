@@ -40,6 +40,6 @@ export class HeroDetailComponent implements OnInit {
   }
   setDefaultImage(event: Event) {
     const target = event.target as HTMLImageElement;
-    target.src = 'assets/default-image.jpg'; // Ruta de la imagen predeterminada
+    target.src = 'assets/default-image.jpg';
   }
 }

@@ -77,13 +77,9 @@ export class HeroListComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy(): void {
-    // Cleans up all subscriptions to avoid memory leaks when the component is destroyed
     this.subscriptions.unsubscribe();
   }
-  /**
-   * Opens a dialog using the dialogFactory, passing in a component and data.
-   * Returns an observable that emits when the dialog is closed.
-   */
+
   openDialog(component: any, data: any) {
     return this.dialogFactory(component, data);
   }

@@ -2,19 +2,13 @@ import { Injectable } from '@angular/core';
 import { Superhero } from '../interfaces/superhero.interface';
 import { Observable, BehaviorSubject, map } from 'rxjs';
 import { LoadingService } from './loading.service';
-/**
- * SuperheroService
- *
- * This service manages a list of superheroes, providing CRUD operations
- * and saving data to localStorage. It also simulates loading states using
- * a LoadingService with a configurable delay.
- */
+
 @Injectable({
   providedIn: 'root',
 })
 export class SuperheroService {
   private localStorageKey = 'superheroes';
-  private delayTime: number = 500; // Simulated delay to mimic API response time
+  private delayTime: number = 500;
 
   private defaultHeroes: Superhero[] = [
     {
@@ -51,11 +45,7 @@ export class SuperheroService {
   constructor(private loadingService: LoadingService) {
     this.loadHeroesFromLocalStorage();
   }
-
-  /**
-   * Loads heroes from localStorage or sets default heroes if none are found.
-   * Updates the heroesSubject observable to reflect the current list.
-   */
+  
   private loadHeroesFromLocalStorage(): void {
     const savedHeroes = localStorage.getItem(this.localStorageKey);
     let heroes: Superhero[];
@@ -132,10 +122,7 @@ export class SuperheroService {
       this.loadingService.hide();
     }, this.delayTime);
   }
-  /**
-   * Generates a unique ID for a new hero by finding the maximum existing ID
-   * and adding 1. This ensures no duplicate IDs are created.
-   */
+
   private generateId(): number {
     const heroes = this.heroesSubject.value;
     return heroes.length ? Math.max(...heroes.map((hero) => hero.id)) + 1 : 1;
